@@ -7,7 +7,7 @@ const server = express();
 server.use(cors()); 
 server.use(express.json()); 
 
-app.use("/", route); 
+server.use("/", route); 
 
 const PORT = 5000;
 server.listen(PORT, () => {
