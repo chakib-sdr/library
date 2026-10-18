@@ -7,7 +7,7 @@ export const checksignin = async (req, res, next) => {
     try {
         const { name, mdps} = req.body;
         const temp = await pool.query(
-            'SELECT name, password FROM info WHERE name = $1',
+            'SELECT id,name, password FROM info WHERE name = $1',
             [name]
         );
         if (temp.rows.length === 0) {

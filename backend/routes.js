@@ -7,4 +7,4 @@ export const route = express.Router();
 route.post("/signin",checksignin,signin );
 route.post("/createacc", checkcreateacc,createacc);
 route.post("/addbook",verifytoken,addbook);
-route.DELETE("/removebook",verifytoken,removebook);
+route.delete("/removebook",verifytoken,removebook);

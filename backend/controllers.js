@@ -6,7 +6,9 @@ import { pool } from './db.js';
 export const signin = (req, res) => {
     try {
         const token = jwt.sign(
-            { name: req.user.name },
+            { name: req.user.name ,
+              id: req.user.id
+            },
             process.env.JWT_SECRET,
             { expiresIn: '1h' }
         );
@@ -65,7 +67,7 @@ export const addbook = async (req,res) => {
 export const removebook = async (req,res) => {
     try {
     const {book_name} = req.body
-    user_id = req.user.id
+    const user_id = req.user.id
     await pool.query('DELETE FROM mylist WHERE user_id = $1 AND book_name = $2',[user_id,book_name]);
         return res.status(201).json({
             message: "Book Removed"
