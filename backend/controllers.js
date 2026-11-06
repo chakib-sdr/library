@@ -47,6 +47,23 @@ export const createacc = async (req, res) => {
     }
 };
 
+export const searchbook = async (req,res)=>{
+    try {
+    const {book_name} = req.body;
+    const result = await pool.query('SELECT * FROM books WHERE book_name = $1',[book_name]);
+    if(result.rows.length == 0){
+        return res.status(404).json({
+            message : 'books not available'
+        })
+    }
+
+        return res.status(200).json({
+            message : "books found"
+        })        
+    } catch (error) {
+        console.log("An error occured",error);
+    }
+}
 
 export const addbook = async (req,res) => {
     try {
