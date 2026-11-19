@@ -7,7 +7,7 @@ export const checksignin = async (req, res, next) => {
     try {
         const { name, mdps} = req.body;
         const temp = await pool.query(
-            'SELECT id,name, password FROM info WHERE name = $1',
+            'SELECT id,name, mdps FROM info WHERE name = $1',
             [name]
         );
         if (temp.rows.length === 0) {
@@ -16,7 +16,7 @@ export const checksignin = async (req, res, next) => {
             });
         }
         const user = temp.rows[0];
-        const isvalid = await bcrypt.compare(mdps,user.password);
+        const isvalid = await bcrypt.compare(mdps,user.mdps);
         if (!isvalid) {
             return res.status(401).json({
                 message: "Invalid password or username"
