@@ -1,6 +1,7 @@
-import { Home } from "./home.jsx";
+
+import { Screen } from "./screen.jsx";
 export function App(){
   return(
-    <Home></Home>
+    <Screen></Screen>
   )
 }

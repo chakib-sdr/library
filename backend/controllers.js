@@ -32,7 +32,7 @@ export const createacc = async (req, res) => {
         const password = await bcrypt.hash(mdps, 10);
 
         await pool.query(
-            'INSERT INTO info (name, password) VALUES ($1, $2)',
+            'INSERT INTO info (name, mdps) VALUES ($1, $2)',
             [name, password]
         );
 

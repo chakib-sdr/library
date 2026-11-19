@@ -1,0 +1,40 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Agrave+Pro:wght@100..700&family=Edu+VIC+WA+NT+Hand:wght@400..700&family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&family=Oswald:wght@200..700&family=Roboto:ital,wght@0,100..900;1,100..900&family=Rubik+Spray+Paint&family=Sekuya&display=swap');
+
+.screencontainer{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.buttons{
+    display: flex;
+    gap: 200px;
+}
+.buttons > button{
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 900;
+    background-color: #99582a;
+    width: 150px;
+    height: 50px;
+    border-radius: 8px;
+    border: solid black;
+}
+button:hover{
+    opacity: 0.5;
+}
+.title{
+    font-family: "Edu VIC WA NT Hand", cursive;
+}
+.cover{
+    display: flex;
+    justify-content: space-between;
+    gap: 50px;
+    background-color: red;
+}
+.coverimg{
+    border: solid black;
+    background-color: aqua;
+}
