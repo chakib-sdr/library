@@ -1,11 +1,14 @@
 import { useState } from "react"
+import { Home } from "./home";
 export const Screen = ()=>{
     const [x, setx] = useState(null);  
-
-    if (x) return <Form1 x={x} onback={() => setx(null)} />;  
+    const [page,setPage] = useState(1);
+    if (x) return <Form1 x={x} onback={() => setx(null)} onlogin={() => setPage(0)} />;  
 
     return(
-        <div className="screencontainer">
+        <div>
+            {
+                page ? <div className="screencontainer">
         <div className="title">
             <h1>Welcome to the Small Library</h1>
         </div>
@@ -13,32 +16,49 @@ export const Screen = ()=>{
             <button onClick={() => setx("createacc")}>Create account</button>
             <button onClick={() => setx("signin")}>Log in</button>
         </div>
+        </div> : 
+         <Home>
+
+         </Home>
+            }
         </div>
+
     )
 }
 
-const Form1 = ({x, onback}) => {
+const Form1 = ({x, onback,onlogin}) => {
     const [error, setError] = useState(""); 
    async function handlesubmit(e,name,mdps){
         e.preventDefault();
         setError("");
         try {
+      const token = localStorage.getItem("token");
       const res = await fetch(`http://localhost:5000/${x}`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+        },
         body: JSON.stringify({ name, mdps }),
       });
 
             if(!res.ok){
-                console.log("Could not establish connection with the server");
+                console.log("There is an error in the res");
+                const err = await res.json().catch(() => ({}));
+                console.log("Status:", res.status, err);
                 if(x == "signin"){
                     setError("Wrong password or username");
                 }
                 return;
             }
+            const data = await res.json(); 
+            if (x === "signin") {
+            localStorage.setItem("token", data.token);  
+            onlogin();
+            }
             console.log("info sent");
             onback();
-            return res.json();           
+            return data;           
             } catch (error) {
                 console.log("An Error occured",error);
             
