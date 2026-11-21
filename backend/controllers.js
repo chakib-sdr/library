@@ -49,7 +49,7 @@ export const createacc = async (req, res) => {
 
 export const searchbook = async (req,res)=>{
     try {
-    const {book_name} = req.body;
+    const {book_name} = req.query;
     const result = await pool.query('SELECT * FROM books WHERE book_name = $1',[book_name]);
     if(result.rows.length == 0){
         return res.status(404).json({
@@ -85,10 +85,14 @@ export const removebook = async (req,res) => {
     try {
     const {book_name} = req.body
     const user_id = req.user.id
-    await pool.query('DELETE FROM mylist WHERE user_id = $1 AND book_name = $2',[user_id,book_name]);
-        return res.status(201).json({
-            message: "Book Removed"
-        });      
+    const result = await pool.query(
+        'DELETE FROM mylist WHERE user_id = $1 AND book_name = $2',
+        [user_id, book_name]
+    );
+    if (result.rowCount === 0) {
+        return res.status(404).json({ message: "Book not in your list" });
+    }
+        return res.status(200).json({ message: "Book Removed" });     
     } catch (error) {
         console.log("An Error has occurred", error);
         return res.status(500).json({

@@ -23,85 +23,95 @@ export function Home() {
       ))}
     </div>
     </div> :
-      <Form setOption={setOption}></Form>
+      <Form option={option} setOption={setOption}> </Form>
       }
 </div>
-
   );
 }
 
-const ADD = () =>{
-  async function handlesubmit(e) {
-    e.preventDefault();
-    try {
-    const res = await fetch(`http://localhost:5000/addbook`,{
-      method : "PUT",
-      body : "title"
-    })
+async function ADD(e, book_name, setOption,setError) {
+  e.preventDefault();
+  setError(null);
+  try {
+    const token = localStorage.getItem("token");
+    const res = await fetch (`http://localhost:5000/searchbook?book_name=${encodeURIComponent(book_name)}`);
     if(!res.ok){
-      console.log("Error in the response");
+      console.log("Book not found");
+      setError("This Book is not available");
       return;
+    }else{
+    const res1 = await fetch(`http://localhost:5000/addbook`, {
+      method: "POST",                                 
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+      },
+      body: JSON.stringify({ book_name }),           
+    });
+    if (!res1.ok) {
+      console.log("Error in the response", res1.status);
+      return setError;
     }
     console.log("book added");
-    } catch (error) {
-      console.log("An Error has occured",error);
+    setOption(null);     
     }
+                                 
+  } catch (error) {
+    console.log("An Error has occured", error);
   }
-  handlesubmit();
 }
 
-
-const  Delete = () =>{
-  async function handlesubmit(e) {
-    e.preventDefault();
-    try {
-    const res = await fetch(`http://localhost:5000/addbook`,{
-      method : "DELETE",
-      body : "title"
-    })
-    if(!res.ok){
-      console.log("Error in the response");
-      return;
+async function Delete(e, book_name, setOption,setError) {
+  e.preventDefault();
+  setError(null);
+  try {
+    const token = localStorage.getItem("token");
+    const res1 = await fetch(`http://localhost:5000/removebook`, { 
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+      },
+      body: JSON.stringify({ book_name }),
+    });
+    if (!res1.ok) {
+      console.log("Error in the response", res1.status);
+      setError("This book is not in your list");
+      return setError;
     }
     console.log("book deleted");
-    } catch (error) {
-      console.log("An Error has occured",error);
-    }
+    setOption(null);
+  } catch (error) {
+    console.log("An Error has occured", error);
   }
-  handlesubmit();
 }
 
-const Form = ({setOption}) => {
-    return(
+const Form = ({ option, setOption }) => {
+  const [error, setError] = useState(null);
+
+  if (option !== "add" && option !== "delete") {
+    return (
       <div>
-        {
-          setOption == "add" ?
-        <form onSubmit={setOption(null) && ADD}>
-        <div>
-          <label>Title of the book</label>
-          <input type="text" placeholder="book title" />
-        </div>
+        <p>Coming soon</p>
+        <button onClick={() => setOption(null)}>Back</button>
+      </div>
+    );
+  }
 
-        <div>
-          <button onClick={setOption(null)}>Back</button>
-          <button>Submit</button>
-        </div>
-      </form> :
-        
-      <form onSubmit={setOption(null) && Delete}>
-        <div>
-          <label>Title of the book</label>
-          <input type="text" placeholder="book title" />
-        </div>
-
-        <div>
-          <button onClick={setOption(null)}>Back</button>
-          <button>Submit</button>
-        </div>
-      </form>
-        } 
-
+  return (
+    <form onSubmit={(e) =>
+      (option == "add" ? ADD : Delete)(e, e.target.elements["book_name"].value, setOption, setError)
+    }>
+      {error && <p>{error}</p>}                            {/* CHANGED: error shows inside the form */}
+      <div>
+        <label>Title of the book</label>
+        <input name="book_name" type="text" placeholder="book title" required />
       </div>
 
-    )
-}
+      <div>
+        <button type="button" onClick={() => setOption(null)}>Back</button>
+        <button type="submit">Submit</button>
+      </div>
+    </form>
+  );
+};
