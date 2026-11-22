@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 const cover_id = [10832290, 6941459, 14630218, 10952280, 12639079, 14612610, 9144523, 382159];
 
 export function Home() {
@@ -86,23 +86,65 @@ async function Delete(e, book_name, setOption,setError) {
   }
 }
 
+const View = ({ option, setOption }) => {
+  const [error, setError] = useState(null);
+  const [books, setBooks] = useState([]);
+
+  useEffect(() => {
+    async function load() {
+      const token = localStorage.getItem("token");
+      let path = option;
+      if(path === "view1"){
+        path = "bookadded";
+      }else{
+        path = "disponible"
+      }
+      try {
+        const res = await fetch(`http://localhost:5000/${path}`, {
+          headers: { "Authorization": `Bearer ${token}` },
+        });
+        if (!res.ok) {
+          if(option === "view1"){
+            setError("your list is empty");
+          }else{
+            setError("An error occured");
+          }
+          return;
+        }
+        const data = await res.json();     
+        setBooks(data.books);
+      } catch (error) {
+        console.log("An error occured", error);
+        setError("Could not connect to the server");
+      }
+    }
+    load();
+  }, [option]);          
+
+  return (
+    <div>
+      {error && <p>{error}</p>}
+      <ul>
+        {books.map((b, i) => <li key={i}>{b.book_name}</li>)}
+      </ul>
+      <button onClick={() => setOption(null)}>Back</button>
+    </div>
+  );
+};
+
 const Form = ({ option, setOption }) => {
   const [error, setError] = useState(null);
-
   if (option !== "add" && option !== "delete") {
-    return (
-      <div>
-        <p>Coming soon</p>
-        <button onClick={() => setOption(null)}>Back</button>
-      </div>
-    );
+    if (option === "view" || option === "view1") {
+      return <View option={option} setOption={setOption} />;
+  }
   }
 
   return (
     <form onSubmit={(e) =>
       (option == "add" ? ADD : Delete)(e, e.target.elements["book_name"].value, setOption, setError)
     }>
-      {error && <p>{error}</p>}                            {/* CHANGED: error shows inside the form */}
+      {error && <p>{error}</p>}                           
       <div>
         <label>Title of the book</label>
         <input name="book_name" type="text" placeholder="book title" required />

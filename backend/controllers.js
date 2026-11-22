@@ -81,6 +81,31 @@ export const addbook = async (req,res) => {
     }
 }
 
+export const mylist = async (req, res) => {
+    try {
+        const result = await pool.query(
+            'SELECT book_name FROM mylist WHERE user_id = $1', [req.user.id]
+        );
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: "Your list is empty" });
+        }
+        return res.status(200).json({ books: result.rows });
+    } catch (error) {
+        console.log("An Error has occurred", error);
+        return res.status(500).json({ message: "Server error" });
+    }
+};
+
+export const disponible = async (req, res) => {
+    try {
+        const result = await pool.query('SELECT book_name FROM books');
+        return res.status(200).json({ books: result.rows });
+    } catch (error) {
+        console.log("An Error has occurred", error);
+        return res.status(500).json({ message: "Server error" });
+    }
+};
+
 export const removebook = async (req,res) => {
     try {
     const {book_name} = req.body

@@ -13,7 +13,7 @@ export const pool = new Pool({
 
 const subjects = ["history","science","fiction","mystery","fantasy","biography","romance","thriller"];
 
-const filldb = async () => {
+export const filldb = async () => {
   try {
     for (let i = 0; i < subjects.length; i++) {
       const response = await fetch(`https://openlibrary.org/subjects/${subjects[i]}.json?limit=10`);
