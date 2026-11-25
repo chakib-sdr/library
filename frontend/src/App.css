@@ -1,58 +1,328 @@
+@import url('https://fonts.googleapis.com/css2?family=Edu+VIC+WA+NT+Hand:wght@400..700&family=Merriweather:wght@300;400;700&display=swap');
 
-@import url('https://fonts.googleapis.com/css2?family=Agrave+Pro:wght@100..700&family=Edu+VIC+WA+NT+Hand:wght@400..700&family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&family=Oswald:wght@200..700&family=Roboto:ital,wght@0,100..900;1,100..900&family=Rubik+Spray+Paint&family=Sekuya&display=swap');
+:root {
+    --bg: #f5ede0;
+    --card: #fffaf2;
+    --brown: #99582a;
+    --brown-dark: #6f3f1c;
+    --ink: #3b2a1a;
+    --muted: #8a7560;
+    --line: #e5d6bf;
+    --error: #b3261e;
+    --error-bg: #fdecea;
+    --shadow: 0 8px 24px rgba(59, 42, 26, 0.12);
+    --radius: 14px;
+}
 
-.screencontainer{
-    height: 100vh;
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    color: var(--ink);
+    font-family: "Merriweather", Georgia, serif;
+    line-height: 1.6;
+    background:
+        radial-gradient(circle at 15% 10%, #fbe9cf 0, transparent 40%),
+        radial-gradient(circle at 90% 90%, #ecd3b0 0, transparent 40%),
+        var(--bg);
+    background-attachment: fixed;
+}
+
+h1, h2 {
+    font-family: "Edu VIC WA NT Hand", cursive;
+    color: var(--brown-dark);
+    margin: 0;
+}
+
+/* ---------- Buttons ---------- */
+button {
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    padding: 11px 22px;
+    border-radius: 10px;
+    border: 2px solid var(--brown-dark);
+    cursor: pointer;
+    transition: transform .15s, box-shadow .15s, background-color .15s, color .15s;
+}
+
+button:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+button:active { transform: translateY(0); box-shadow: none; }
+
+button:focus-visible,
+input:focus-visible {
+    outline: 3px solid #e0a96d;
+    outline-offset: 2px;
+}
+
+.primary {
+    background: var(--brown);
+    color: #fff;
+}
+.primary:hover { background: var(--brown-dark); }
+
+.secondary {
+    background: transparent;
+    color: var(--brown-dark);
+}
+.secondary:hover { background: var(--line); }
+
+/* ---------- Welcome screen ---------- */
+.screencontainer {
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-around;
+    justify-content: center;
+    gap: 48px;
+    padding: 24px;
+    text-align: center;
 }
 
+.title { max-width: 640px; }
 
-.buttons{
+.logo {
+    display: block;
+    font-size: 64px;
+    margin-bottom: 10px;
+}
+
+.title h1 { font-size: clamp(2.2rem, 6vw, 3.8rem); line-height: 1.15; }
+
+.tagline {
+    margin: 14px 0 0;
+    color: var(--muted);
+    font-size: 1.05rem;
+}
+
+.buttons {
     display: flex;
-    gap: 200px;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
 }
-.buttons > button{
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: 900;
-    background-color: #99582a;
-    width: 150px;
-    height: 50px;
+
+.buttons > button {
+    width: 180px;
+    height: 54px;
+    font-size: 16px;
+}
+
+/* ---------- Cards (login, create, add, delete) ---------- */
+.authpage {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+
+.card {
+    width: 100%;
+    max-width: 420px;
+    padding: 36px 32px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.card h2 {
+    text-align: center;
+    font-size: 2rem;
+}
+
+.field label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--brown-dark);
+}
+
+.field input {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 15px;
+    font-family: inherit;
+    color: var(--ink);
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    transition: border-color .15s, box-shadow .15s;
+}
+
+.field input:focus {
+    border-color: var(--brown);
+    box-shadow: 0 0 0 3px rgba(153, 88, 42, .15);
+}
+
+.buttonsform {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 6px;
+}
+
+.buttonsform button { flex: 1; }
+
+.error {
+    margin: 0;
+    padding: 10px 14px;
+    font-size: 14px;
+    color: var(--error);
+    background: var(--error-bg);
+    border-left: 4px solid var(--error);
     border-radius: 8px;
-    border: solid black;
-}
-button:hover{
-    opacity: 0.5;
-}
-.title{
-    font-family: "Edu VIC WA NT Hand", cursive;
-}
-.cover{
-    display: grid;
-    grid-template-rows: repeat(2,1fr);
-    grid-template-columns: repeat(4,1fr);
-    place-items: center;
-    gap: 50px;
-    margin-left: 50px;
-
-}
-.coverimg{
-    border: solid black;
-    background-color: aqua;
 }
 
-.menu{
+/* ---------- Home top bar ---------- */
+.topbar {
     display: flex;
-    justify-content: space-around;
-    margin-bottom: 50px;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 28px;
+    background: var(--card);
+    border-bottom: 1px solid var(--line);
+    box-shadow: 0 2px 12px rgba(59, 42, 26, .08);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.brand {
+    font-family: "Edu VIC WA NT Hand", cursive;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--brown-dark);
+}
+
+.menu {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
 }
 
 .menu > button {
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: bold;
-    font-size: 20px;
-    background-color: white;
-    border: none;
+    font-size: 14px;
+    padding: 9px 16px;
+    background: transparent;
+    color: var(--brown-dark);
+    border: 2px solid transparent;
+}
+
+.menu > button:hover {
+    background: var(--brown);
+    color: #fff;
+    border-color: var(--brown-dark);
+    box-shadow: none;
+}
+
+.sectiontitle {
+    text-align: center;
+    font-size: 2rem;
+    margin: 44px 0 24px;
+}
+
+/* ---------- Covers ---------- */
+.cover {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 28px;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 24px 60px;
+    place-items: center;
+}
+
+.coverimg {
+    width: 100%;
+    max-width: 210px;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+    border-radius: 6px 10px 10px 6px;
+    border-left: 8px solid var(--brown-dark);
+    background: var(--line);
+    box-shadow: var(--shadow);
+    transition: transform .25s, box-shadow .25s;
+}
+
+.coverimg:hover {
+    transform: translateY(-8px) rotate(-1.5deg);
+    box-shadow: 0 16px 32px rgba(59, 42, 26, .25);
+}
+
+/* ---------- View screens ---------- */
+.view {
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 50px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.view h2 { font-size: 2.2rem; }
+.view .error { width: 100%; text-align: center; }
+
+.booklist {
+    width: 100%;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    counter-reset: book;
+}
+
+.booklist li {
+    counter-increment: book;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 18px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-left: 5px solid var(--brown);
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(59, 42, 26, .08);
+    transition: transform .15s;
+}
+
+.booklist li:hover { transform: translateX(4px); }
+
+.booklist li::before {
+    content: counter(book);
+    min-width: 28px;
+    height: 28px;
+    display: grid;
+    place-items: center;
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+    background: var(--brown);
+    border-radius: 50%;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 800px) {
+    .cover { grid-template-columns: repeat(2, 1fr); }
+    .topbar { justify-content: center; }
+}
+
+@media (max-width: 480px) {
+    .card { padding: 26px 20px; }
+    .buttons > button { width: 100%; }
+    .menu > button { flex: 1 1 45%; }
 }

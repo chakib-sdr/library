@@ -7,12 +7,16 @@ export function Home() {
     <div>
       {!option ?
     <div>
-      <div className="menu">
-        <button onClick={() => setOption("add")}>ADD Book</button>
-        <button onClick={() => setOption("delete")}>Delete Book</button>
-        <button onClick={() => setOption("view")}>View disponible books</button>
-        <button onClick={() => setOption("view1")}>View your list</button>
-      </div>
+      <header className="topbar">
+        <span className="brand">📚 Small Library</span>
+        <div className="menu">
+          <button onClick={() => setOption("add")}>ADD Book</button>
+          <button onClick={() => setOption("delete")}>Delete Book</button>
+          <button onClick={() => setOption("view")}>View disponible books</button>
+          <button onClick={() => setOption("view1")}>View your list</button>
+        </div>
+      </header>
+    <h2 className="sectiontitle">Featured covers</h2>
     <div className="cover">
       {cover_id.map((id) => (
         <img className="coverimg"
@@ -122,12 +126,13 @@ const View = ({ option, setOption }) => {
   }, [option]);          
 
   return (
-    <div>
-      {error && <p>{error}</p>}
-      <ul>
+    <div className="view">
+      <h2>{option === "view1" ? "Your list" : "Available books"}</h2>
+      {error && <p className="error">{error}</p>}
+      <ul className="booklist">
         {books.map((b, i) => <li key={i}>{b.book_name}</li>)}
       </ul>
-      <button onClick={() => setOption(null)}>Back</button>
+      <button className="secondary" onClick={() => setOption(null)}>Back</button>
     </div>
   );
 };
@@ -141,19 +146,22 @@ const Form = ({ option, setOption }) => {
   }
 
   return (
-    <form onSubmit={(e) =>
+    <div className="authpage">
+    <form className="card" onSubmit={(e) =>
       (option == "add" ? ADD : Delete)(e, e.target.elements["book_name"].value, setOption, setError)
     }>
-      {error && <p>{error}</p>}                           
-      <div>
+      <h2>{option === "add" ? "Add a book" : "Delete a book"}</h2>
+      {error && <p className="error">{error}</p>}                           
+      <div className="field">
         <label>Title of the book</label>
         <input name="book_name" type="text" placeholder="book title" required />
       </div>
 
-      <div>
-        <button type="button" onClick={() => setOption(null)}>Back</button>
-        <button type="submit">Submit</button>
+      <div className="buttonsform">
+        <button className="secondary" type="button" onClick={() => setOption(null)}>Back</button>
+        <button className="primary" type="submit">Submit</button>
       </div>
     </form>
+    </div>
   );
 };

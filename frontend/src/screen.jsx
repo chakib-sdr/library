@@ -10,16 +10,16 @@ export const Screen = ()=>{
             {
                 page ? <div className="screencontainer">
         <div className="title">
+            <span className="logo">📚</span>
             <h1>Welcome to the Small Library</h1>
+            <p className="tagline">Find, collect and keep track of the books you love.</p>
         </div>
         <div className="buttons">
-            <button onClick={() => setx("createacc")}>Create account</button>
-            <button onClick={() => setx("signin")}>Log in</button>
+            <button className="primary" onClick={() => setx("createacc")}>Create account</button>
+            <button className="secondary" onClick={() => setx("signin")}>Log in</button>
         </div>
         </div> : 
-         <Home>
-
-         </Home>
+         <Home />
             }
         </div>
 
@@ -67,30 +67,29 @@ const Form1 = ({x, onback,onlogin}) => {
 
 
     return(
-    <form onSubmit={(e) => handlesubmit(e, e.target.elements["name"].value, e.target.elements["mdps"].value) }>
-        {error && <p>{error}</p>}
-        <div>
-        <div>
+    <div className="authpage">
+    <form className="card" onSubmit={(e) => handlesubmit(e, e.target.elements["name"].value, e.target.elements["mdps"].value) }>
+        <h2>{x === "createacc" ? "Create account" : "Log in"}</h2>
+        {error && <p className="error">{error}</p>}
+        <div className="field">
             <label htmlFor="name">Name</label>
             <input name="name" id="name" type="text" placeholder="name" />
         </div>
 
-        <div>
+        <div className="field">
         <label htmlFor="password">Password</label>
         <input name="mdps" id="password" type="password" placeholder="password" minLength={8} />
         </div>
-        </div> 
 
-
-
-  <div className="buttonsform">
-    <button type="button" onClick={onback}>
-      Back
-    </button>
-    <button type="submit">
-        Submit
-    </button>
-  </div>
-</form>
+        <div className="buttonsform">
+            <button className="secondary" type="button" onClick={onback}>
+              Back
+            </button>
+            <button className="primary" type="submit">
+                Submit
+            </button>
+        </div>
+    </form>
+    </div>
     )
 }
